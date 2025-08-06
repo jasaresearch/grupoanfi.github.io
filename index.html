@@ -3,19 +3,831 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathInnovate</title>
+    <title>ANFI - Análisis Numérico y Financiero</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #333; }
-        .container { max-width: 800px; margin: auto; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Variables CSS para colores */
+        :root {
+            --primary-blue: #1B365D;
+            --secondary-blue: #2E5984;
+            --accent-gold: #FFB800;
+            --light-blue: #E8F2FF;
+            --dark-gray: #2c2c2c;
+            --light-gray: #f8f9fa;
+            --gradient-1: linear-gradient(135deg, #1B365D, #2E5984);
+            --gradient-2: linear-gradient(135deg, #FFB800, #FFC947);
+        }
+        
+        /* Header */
+        header {
+            background: var(--gradient-1);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(27, 54, 93, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-1);
+            color: white;
+            padding: 120px 2rem 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 184, 0, 0.1), transparent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero .subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.85;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        
+        .cta-button {
+            background: var(--gradient-2);
+            color: var(--dark-gray);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 184, 0, 0.4);
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        /* Sections */
+        .section {
+            padding: 80px 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            animation: slideInFromLeft 1s ease;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+        }
+        
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(27, 54, 93, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-left: 5px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideInUp 0.8s ease forwards;
+        }
+        
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.3s; }
+        .service-card:nth-child(3) { animation-delay: 0.5s; }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: all 0.4s ease;
+            transform: translateX(-100%);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(27, 54, 93, 0.2);
+        }
+        
+        .service-card:hover::before {
+            opacity: 0.05;
+            transform: translateX(0);
+        }
+        
+        .service-card h3 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .service-card p {
+            color: #666;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Research Areas */
+        .research-areas {
+            background: var(--light-gray);
+        }
+        
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .research-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.9);
+            opacity: 0;
+            animation: zoomIn 0.6s ease forwards;
+        }
+        
+        .research-item:nth-child(1) { animation-delay: 0.1s; }
+        .research-item:nth-child(2) { animation-delay: 0.2s; }
+        .research-item:nth-child(3) { animation-delay: 0.3s; }
+        .research-item:nth-child(4) { animation-delay: 0.4s; }
+        .research-item:nth-child(5) { animation-delay: 0.5s; }
+        .research-item:nth-child(6) { animation-delay: 0.6s; }
+        
+        .research-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: all 0.4s ease;
+            transform: scale(0);
+            border-radius: 15px;
+        }
+        
+        .research-item:hover {
+            border-color: var(--accent-gold);
+            transform: scale(1.05) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(27, 54, 93, 0.2);
+        }
+        
+        .research-item:hover::before {
+            opacity: 0.05;
+            transform: scale(1);
+        }
+        
+        .research-item h4 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(27, 54, 93, 0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slideInFromLeft 0.8s ease forwards;
+        }
+        
+        .project-card:nth-child(odd) {
+            animation: slideInFromLeft 0.8s ease forwards;
+        }
+        
+        .project-card:nth-child(even) {
+            animation: slideInFromRight 0.8s ease forwards;
+        }
+        
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.3s; }
+        .project-card:nth-child(3) { animation-delay: 0.5s; }
+        .project-card:nth-child(4) { animation-delay: 0.7s; }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(27, 54, 93, 0.2);
+        }
+        
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .project-content {
+            padding: 2rem;
+        }
+        
+        .project-card h4 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .project-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: var(--gradient-1);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 184, 0, 0.1), transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact h2 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-info {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-email {
+            background: var(--accent-gold);
+            color: var(--dark-gray);
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-email:hover {
+            background: #e6b535;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(244, 200, 66, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-gray);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.2;
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 50px 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .services-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .research-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Loading animation for logo */
+        .logo img {
+            animation: logoFadeIn 1s ease;
+        }
+        
+        @keyframes logoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenidos a MathInnovate</h1>
-        <p>Transformamos problemas complejos en soluciones innovadoras con IA y matemáticas aplicadas.</p>
-        <p>Pronto más detalles sobre nuestra plataforma de anotación inteligente y servicios de consultoría.</p>
-        <p>Contacto: <a href="mailto:info@mathinnovate.com">info@mathinnovate.com</a></p>
-    </div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="ANFI Logo" id="anfi-logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#investigacion">Investigación</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>ANFI</h1>
+            <p class="subtitle">Análisis Numérico y Financiero</p>
+            <p>Transformamos problemas complejos en soluciones innovadoras mediante matemáticas aplicadas, inteligencia artificial y desarrollo de software. Generamos valor económico y social para PYMES, industrias, universidades y la sociedad.</p>
+            <a href="#servicios" class="cta-button">Conoce nuestros servicios</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Productos y Servicios</h2>
+                <p>Soluciones especializadas en matemáticas aplicadas e inteligencia artificial</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Capacitaciones en IA y Matemáticas Aplicadas</h3>
+                    <p>Cursos y talleres para empresas y universidades sobre IA, RLHF, visión por computadora y modelos probabilísticos, con enfoque práctico y técnico. Formación de estudiantes de pregrado y posgrado en nuestras líneas de investigación.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Consultoría en Ciencia de Datos</h3>
+                    <p>Asesorías especializadas en machine learning e inteligencia artificial para la transformación digital de industrias. Incluimos sistemas RAG y agentes de IA para sectores como finanzas, salud y seguridad, con arquitectura escalable basada en microservicios y Docker.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Automatización de Anotación de Datos</h3>
+                    <p>Soluciones para automatizar y optimizar la anotación de datos de texto, imágenes y video, dirigida a empresas que entrenan modelos de IA. Mejoramos la eficiencia y calidad del proceso de preparación de datos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Areas -->
+    <section id="investigacion" class="section research-areas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Líneas de Investigación</h2>
+                <p>Áreas de especialización en investigación de vanguardia</p>
+            </div>
+            <div class="research-grid">
+                <div class="research-item">
+                    <h4>Convergencia Tecnológica en IA</h4>
+                </div>
+                <div class="research-item">
+                    <h4>Optimización Estocástica Robusta para Modelos de Aprendizaje Profundo</h4>
+                </div>
+                <div class="research-item">
+                    <h4>Aprendizaje por Refuerzo con Supervisión Humana (RLHF)</h4>
+                </div>
+                <div class="research-item">
+                    <h4>Análisis y Cuantificación de Riesgos</h4>
+                </div>
+                <div class="research-item">
+                    <h4>Soluciones Agénticas para Defensa e Inteligencia</h4>
+                </div>
+                <div class="research-item">
+                    <h4>IA Ética</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="proyectos" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Proyectos Destacados</h2>
+                <p>Investigaciones y desarrollos que generan impacto real</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-content">
+                        <h4>Modelo Matemático para Trading Automatizado</h4>
+                        <p>Desarrollo de estrategias automatizadas de creación de mercado, cobertura y trading mediante el análisis de la microestructura del mercado de TES.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h4>Optimización de Trading de Alta Frecuencia</h4>
+                        <p>Comparación y optimización de estrategias de trading de alta frecuencia utilizando técnicas avanzadas de matemáticas aplicadas.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h4>Sistema de Detección de Anomalías Satelitales</h4>
+                        <p>Desarrollo de un sistema para la identificación en tiempo real de anomalías asociadas a la pérdida de señal de rastreo satelital de vehículos.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h4>Sistema Inteligente de Medición de Gramaje</h4>
+                        <p>Medición de gramaje en alimentos mediante IA embebida: modelos híbridos de topología algebraica y redes neuronales eficientes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="section contact">
+        <div class="container">
+            <div class="contact-content">
+                <h2>Contacto</h2>
+                <p class="contact-info">¿Interesado en colaborar con nosotros? Contáctanos para discutir oportunidades de investigación, consultoría o capacitación.</p>
+                <a href="mailto:jose.solano@udea.edu.co" class="contact-email">jose.solano@udea.edu.co</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ANFI - Grupo de Investigación Análisis Numérico y Financiero. Universidad de Antioquia.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Logo loading - convert uploaded image to base64 or use actual image
+        document.addEventListener('DOMContentLoaded', function() {
+            // This would normally load your actual logo
+            // For now using a placeholder until you upload the actual image
+            const logo = document.getElementById('anfi-logo');
+            // logo.src = 'path-to-your-actual-logo.png';
+            
+            // Smooth scroll for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Header scroll effect
+            let lastScroll = 0;
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 100) {
+                    header.style.background = 'rgba(45, 80, 22, 0.95)';
+                    header.style.backdropFilter = 'blur(10px)';
+                } else {
+                    header.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
+                    header.style.backdropFilter = 'none';
+                }
+                
+                lastScroll = currentScroll;
+            });
+            
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all cards and sections
+            document.querySelectorAll('.service-card, .project-card, .research-item').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
