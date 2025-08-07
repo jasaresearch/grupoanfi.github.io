@@ -32,16 +32,17 @@
         
         /* Header */
         header {
-            background: var(--gradient-1);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-blue);
             padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 30px rgba(27, 54, 93, 0.3);
+            box-shadow: 0 4px 30px rgba(27, 54, 93, 0.15);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(27, 54, 93, 0.1);
         }
         
         nav {
@@ -71,9 +72,9 @@
         }
         
         .nav-links a {
-            color: white;
+            color: var(--primary-blue);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: color 0.3s ease;
             position: relative;
         }
@@ -638,7 +639,7 @@
     <header>
         <nav>
             <div class="logo">
-                <img src="anfi-logo.png" alt="ANFI Logo" id="anfi-logo">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" alt="ANFI Logo" id="anfi-logo">
             </div>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
@@ -797,11 +798,11 @@
                 const currentScroll = window.pageYOffset;
                 
                 if (currentScroll > 100) {
-                    header.style.background = 'rgba(45, 80, 22, 0.95)';
-                    header.style.backdropFilter = 'blur(10px)';
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 4px 30px rgba(27, 54, 93, 0.2)';
                 } else {
-                    header.style.background = 'linear-gradient(135deg, var(--primary-green), var(--secondary-green))';
-                    header.style.backdropFilter = 'none';
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = '0 4px 30px rgba(27, 54, 93, 0.15)';
                 }
                 
                 lastScroll = currentScroll;
